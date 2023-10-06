@@ -1,6 +1,6 @@
 package ru.practicum;
 
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,8 @@ import java.util.Map;
 
 public class StatsClient {
     private final RestTemplate restTemplate;
-    private static final String STATS_URI = "http://localhost:9090";
+    @Value("${app.statsUri}")
+    private String statsUri;
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -22,7 +23,7 @@ public class StatsClient {
 
     public void hit(HitDto dto) {
         HttpEntity<HitDto> httpEntity = new HttpEntity<>(dto);
-        restTemplate.exchange(STATS_URI + "/uri", HttpMethod.POST, httpEntity, Object.class);
+        restTemplate.exchange(statsUri + "/uri", HttpMethod.POST, httpEntity, Object.class);
     }
 
     public ResponseEntity<Object> get(String strStart, String strEnd, String[] uris, boolean unique) {
@@ -34,7 +35,7 @@ public class StatsClient {
                     "end", LocalDateTime.parse(strEnd, formatter),
                     "unique", unique
             );
-            path = STATS_URI + "/stats?start={strStart}&end={strEnd}&unique={unique}";
+            path = statsUri + "/stats?start={strStart}&end={strEnd}&unique={unique}";
         } else {
             params = Map.of(
                     "start", LocalDateTime.parse(strStart, formatter),
@@ -42,7 +43,7 @@ public class StatsClient {
                     "uris", uris,
                     "unique", unique
             );
-            path = STATS_URI + "/stats?start={strStart}&end={strEnd}&uris={uris}&unique={unique}";
+            path = statsUri + "/stats?start={strStart}&end={strEnd}&uris={uris}&unique={unique}";
         }
         return prepareGatewayResponse(restTemplate.getForEntity(path, Object.class, params));
     }

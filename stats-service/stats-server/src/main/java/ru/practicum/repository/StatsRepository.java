@@ -21,7 +21,7 @@ public interface StatsRepository extends JpaRepository<Hit, Long> {
             "where h.timestamp between ?1 and ?2 and h.uri in ?3 " +
             "group by h.app, h.uri, h.ip " +
             "order by count(distinct h.ip) desc")
-    List<Stat> findUniqueIpByUris(LocalDateTime start, LocalDateTime end, String[] uris);
+    List<Stat> findUniqueIpByUris(LocalDateTime start, LocalDateTime end, List<String> uris);
 
     @Query(value = "select new ru.practicum.model.Stat(h.app, h.uri, count(h.app)) " +
             "from Hit h " +
@@ -35,5 +35,5 @@ public interface StatsRepository extends JpaRepository<Hit, Long> {
             "where h.timestamp between ?1 and ?2 and h.uri in ?3 " +
             "group by h.app, h.uri " +
             "order by count(h.app) desc")
-    List<Stat> findNotUniqueIpByUris(LocalDateTime start, LocalDateTime end, String[] uris);
+    List<Stat> findNotUniqueIpByUris(LocalDateTime start, LocalDateTime end, List<String> uris);
 }
