@@ -16,7 +16,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleValidationRequestException(final ValidationDateException e) {
         log.warn("ValidationException!, {}", e.getMessage());
-        return new ApiError("BAD_REQUEST", "Incorrectly made request.",
+        return new ApiError(HttpStatus.BAD_REQUEST, "Incorrectly made request.",
                 e.getMessage(), LocalDateTime.now());
     }
 }

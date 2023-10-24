@@ -26,9 +26,9 @@ state varchar(9) not null,
 initiator_id bigint not null references users(id) on delete cascade,
 category_id bigint not null references categories(id) on delete cascade,
 location_id int not null references locations(id) on delete cascade,
-created timestamp not null,
-event_date timestamp not null,
-published_on timestamp,
+created timestamp without time zone not null,
+event_date timestamp without time zone not null,
+published_on timestamp without time zone,
 paid boolean,
 request_moderation boolean,
 participant_limit int default 0,
@@ -39,7 +39,7 @@ create table if not exists requests (
 id serial not null primary key,
 event_id bigint not null references events(id) on delete cascade,
 requester_id bigint not null references users(id) on delete cascade,
-created timestamp not null,
+created timestamp without time zone not null,
 status varchar(9) not null
 );
 

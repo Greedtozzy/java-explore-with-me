@@ -20,7 +20,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError handleUserNotFoundException(final UserNotFoundException e) {
         log.warn("UserNotFoundException!, {}", e.getMessage());
-        return new ApiError("NOT_FOUND", "The required object was not found.",
+        return new ApiError(HttpStatus.NOT_FOUND, "The required object was not found.",
                 e.getMessage(), LocalDateTime.now());
     }
 
@@ -28,7 +28,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError handleRequestNotFoundException(final RequestNotFoundException e) {
         log.warn("RequestNotFoundException!, {}", e.getMessage());
-        return new ApiError("NOT_FOUND", "The required object was not found.",
+        return new ApiError(HttpStatus.NOT_FOUND, "The required object was not found.",
                 e.getMessage(), LocalDateTime.now());
     }
 
@@ -36,7 +36,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError handleEventNotFoundException(final EventNotFoundException e) {
         log.warn("EventNotFoundException!, {}", e.getMessage());
-        return new ApiError("NOT_FOUND", "The required object was not found.",
+        return new ApiError(HttpStatus.NOT_FOUND, "The required object was not found.",
                 e.getMessage(), LocalDateTime.now());
     }
 
@@ -44,7 +44,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError handleCompilationNotFoundException(final CompilationNotFoundException e) {
         log.warn("CompilationNotFoundException!, {}", e.getMessage());
-        return new ApiError("NOT_FOUND", "The required object was not found.",
+        return new ApiError(HttpStatus.NOT_FOUND, "The required object was not found.",
                 e.getMessage(), LocalDateTime.now());
     }
 
@@ -52,7 +52,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError handleCategoryNotFoundException(final CategoryNotFoundException e) {
         log.warn("CategoryNotFoundException!, {}", e.getMessage());
-        return new ApiError("NOT_FOUND", "The required object was not found.",
+        return new ApiError(HttpStatus.NOT_FOUND, "The required object was not found.",
                 e.getMessage(), LocalDateTime.now());
     }
 
@@ -60,7 +60,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleValidationException(final ValidationException e) {
         log.warn("ValidationException!, {}", e.getMessage());
-        return new ApiError("BAD_REQUEST", "Incorrectly made request.",
+        return new ApiError(HttpStatus.BAD_REQUEST, "Incorrectly made request.",
                 e.getMessage(), LocalDateTime.now());
     }
 
@@ -68,7 +68,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleValidationRequestException(final ValidationRequestException e) {
         log.warn("ValidationException!, {}", e.getMessage());
-        return new ApiError("BAD_REQUEST", "Incorrectly made request.",
+        return new ApiError(HttpStatus.BAD_REQUEST, "Incorrectly made request.",
                 e.getMessage(), LocalDateTime.now());
     }
 
@@ -76,7 +76,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
         log.warn("MethodArgumentNotValidException!, {}", e.getMessage());
-        return new ApiError("BAD_REQUEST", "Incorrectly made request.",
+        return new ApiError(HttpStatus.BAD_REQUEST, "Incorrectly made request.",
                 e.getMessage(), LocalDateTime.now());
     }
 
@@ -84,7 +84,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ApiError handleConstraintViolationException(final ConstraintViolationException e) {
         log.warn("ConstraintViolationException!, {}", e.getMessage());
-        return new ApiError("CONFLICT", "Integrity constraint has been violated.",
+        return new ApiError(HttpStatus.CONFLICT, "Integrity constraint has been violated.",
                 e.getMessage(), LocalDateTime.now());
     }
 
@@ -92,7 +92,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ApiError handleForbiddenArgumentException(final ForbiddenArgumentException e) {
         log.warn("ForbiddenArgumentException!, {}", e.getMessage());
-        return new ApiError("FORBIDDEN", "For the requested operation the conditions are not met.",
+        return new ApiError(HttpStatus.FORBIDDEN, "For the requested operation the conditions are not met.",
                 e.getMessage(), LocalDateTime.now());
     }
 }

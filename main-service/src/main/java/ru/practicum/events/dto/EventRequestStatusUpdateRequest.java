@@ -1,5 +1,6 @@
 package ru.practicum.events.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.requests.model.enums.NewRequestStatus;
@@ -12,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class EventRequestStatusUpdateRequest {
     @NotNull
     List<Long> requestIds;
