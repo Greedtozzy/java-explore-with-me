@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.HitDto;
 import ru.practicum.StatDto;
+import ru.practicum.exception.ValidationDateException;
 import ru.practicum.model.Stat;
 import ru.practicum.model.mapper.HitMapper;
 import ru.practicum.model.mapper.StatMapper;
@@ -25,6 +26,9 @@ public class StatsServiceImpl implements StatsService {
 
     @Override
     public List<StatDto> get(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
+        if (start.isAfter(end)) {
+            throw new ValidationDateException("Start can't be after end.");
+        }
         List<Stat> stats;
         if (uris == null) {
             if (unique) {
