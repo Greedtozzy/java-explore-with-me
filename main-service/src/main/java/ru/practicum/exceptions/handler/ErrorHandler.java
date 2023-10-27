@@ -57,6 +57,14 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleLocationNotFoundException(final LocationNotFoundException e) {
+        log.warn("CategoryNotFoundException!, {}", e.getMessage());
+        return new ApiError(HttpStatus.NOT_FOUND, "The required object was not found.",
+                e.getMessage(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleValidationException(final ValidationException e) {
         log.warn("ValidationException!, {}", e.getMessage());

@@ -26,6 +26,8 @@ public interface EventService {
 
     EventFullDto getEventByIdPublic(long eventId, HttpServletRequest request);
 
+    List<EventFullDto> getEventsInLocationPublic(long locId, boolean onlyAvailable);
+
     List<EventFullDto> getEventsByAdmin(List<Long> users, List<State> states,
                                         List<Long> categories, LocalDateTime rangeStart,
                                         LocalDateTime rangeEnd, int from, int size);

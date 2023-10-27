@@ -23,7 +23,9 @@ import org.springframework.data.domain.Pageable;
 import ru.practicum.events.repository.EventRepository;
 import ru.practicum.exceptions.*;
 import ru.practicum.location.dto.LocationDto;
+import ru.practicum.location.model.AdminLocation;
 import ru.practicum.location.model.Location;
+import ru.practicum.location.repository.AdminLocationRepository;
 import ru.practicum.location.repository.LocationRepository;
 import ru.practicum.requests.dto.ParticipationRequestDto;
 import ru.practicum.requests.dto.mapper.ParticipationRequestMapper;
@@ -48,6 +50,7 @@ public class EventServiceImpl implements EventService {
     private final CategoryRepository categoryRepository;
     private final LocationRepository locationRepository;
     private final RequestRepository requestRepository;
+    private final AdminLocationRepository adminLocationRepository;
     @Autowired
     private final StatsClient statsClient;
 
@@ -236,6 +239,23 @@ public class EventServiceImpl implements EventService {
         }
         log.info("Get event id {}", eventId);
         return EventMapper.toFullDto(repository.save(event));
+    }
+
+    @Override
+    public List<EventFullDto> getEventsInLocationPublic(long locId, boolean onlyAvailable) {
+        if (onlyAvailable) {
+            log.info("Get only available events in location id={}.", locId);
+            return repository.findAll().stream()
+                    .filter(event -> isEventInLocation(event.getLocation(), locId))
+                    .filter(event -> (event.getParticipantLimit() > event.getConfirmedRequests().size()) || event.getParticipantLimit() == 0)
+                    .map(EventMapper::toFullDto)
+                    .collect(Collectors.toList());
+        }
+        log.info("Get all events in location id={}.", locId);
+        return repository.findAll().stream()
+                .filter(event -> isEventInLocation(event.getLocation(), locId))
+                .map(EventMapper::toFullDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -451,5 +471,20 @@ public class EventServiceImpl implements EventService {
 
     private Specification<Event> paidIs(Boolean paid) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("paid"), paid);
+    }
+
+    private boolean isEventInLocation(Location eventLoc, long adminLocId) {
+        AdminLocation adminLoc = adminLocationRepository.findById(adminLocId)
+                .orElseThrow(() -> new LocationNotFoundException(String.format("Location by id %d not found", adminLocId)));
+        double range;
+        if (eventLoc.getLat() == adminLoc.getLat() && eventLoc.getLon() == adminLoc.getLon()) {
+            range = 0;
+        } else {
+            double avgLat = (eventLoc.getLat() + adminLoc.getLat()) / 2;
+            double kmInDegree = Math.cos(avgLat) * 111.3;
+            range = Math.abs(Math.sqrt(Math.pow((eventLoc.getLat() - adminLoc.getLat()), 2) +
+                    Math.pow((eventLoc.getLon() - adminLoc.getLon()), 2)) * kmInDegree);
+        }
+        return range <= adminLoc.getRad();
     }
 }

@@ -37,4 +37,10 @@ public class PublicEventController {
                                            HttpServletRequest request) {
         return service.getEventByIdPublic(eventId, request);
     }
+
+    @GetMapping("/location/{locId}")
+    public List<EventFullDto> getEventsInLocationPublic(@PathVariable long locId,
+                                                        @RequestParam(value = "onlyAvailable", defaultValue = "false", required = false) boolean onlyAvailable) {
+        return service.getEventsInLocationPublic(locId, onlyAvailable);
+    }
 }
