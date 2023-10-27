@@ -70,5 +70,5 @@ Template repository for ExploreWithMe project.
 - GET /events/location/{locId} - Получение информации о событиях, проводимых в конкретной локации.
 
 ## Ссылка на pull-request:
-
+https://github.com/Greedtozzy/java-explore-with-me/pull/5
 
