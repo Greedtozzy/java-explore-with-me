@@ -10,9 +10,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "locations", schema = "public")
+@Table(name = "administrated_locations")
 @Builder
-public class Location {
+public class AdminLocation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
@@ -20,4 +20,8 @@ public class Location {
     double lat;
     @Column(name = "lon", nullable = false)
     double lon;
+    @Column(name = "rad", nullable = false)
+    double rad;
+    @Column(name = "name", nullable = false)
+    String name;
 }

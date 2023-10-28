@@ -1,4 +1,4 @@
-drop table if exists users, categories, locations, events, requests, compilations, event_compilation;
+drop table if exists users, categories, locations, events, requests, compilations, event_compilation, administrated_locations;
 
 create table if not exists users (
 id serial not null primary key,
@@ -53,4 +53,12 @@ create table if not exists event_compilation (
 event_id bigint not null references events(id) on delete cascade,
 compilation_id bigint not null references compilations(id) on delete cascade,
 primary key (event_id, compilation_id)
+);
+
+create table if not exists administrated_locations (
+id serial not null primary key,
+lat float not null,
+lon float not null,
+rad float not null,
+name varchar(255) not null unique
 );
